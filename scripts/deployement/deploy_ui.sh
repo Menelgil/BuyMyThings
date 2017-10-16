@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 TAR_NAME="buymythings_ui.tar"
-BINARY_REPO="/var/jenkins_home/BuyMyThings"
+BINARY_REPO="/var/jenkins_home/binary_repository/BuyMyThings"
 
 DOCKER_IMAGE="com.radix/buymythings_ui"
 
