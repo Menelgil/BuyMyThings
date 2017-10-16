@@ -1,29 +1,27 @@
 #!/usr/bin/env bash
 
 TAR_NAME="buymythings_ui.tar"
-BINARY_SERVER_USER="menelgil"
-BINARY_SERVER_HOST="remyradix.fr"
-BINARY_SERVER_DIR="BuyMyThings/packaging"
+BINARY_REPO="/var/jenkins_home/BuyMyThings"
 
 DOCKER_IMAGE="com.radix/buymythings_ui"
 
 echo "[$(date +"%Y-%m-%d_%Hh%M")] retrieving packaged binary"
-scp ${BINARY_SERVER_USER}@${BINARY_SERVER_HOST}:./${BINARY_SERVER_DIR}/${TAR_NAME} ./${TAR_NAME}
+cp ${BINARY_REPO}/${TAR_NAME} .
 
 if [ "$?" -ne 0 ]; then
-  echo "[$(date +"%Y-%m-%d_%Hh%M")] retrieving package binary failed"
+  echo "[$(date +"%Y-%m-%d_%Hh%M")] retrieving packaged binary failed"
   exit 1;
 fi
 
-echo "[$(date +"%Y-%m-%d_%Hh%M")] extracting binary"
+echo "[$(date +"%Y-%m-%d_%Hh%M")] extracting packaged binary"
 tar xvf ${TAR_NAME}
 
 if [ "$?" -ne 0 ]; then
-  echo "[$(date +"%Y-%m-%d_%Hh%M")] binary extraction failed"
+  echo "[$(date +"%Y-%m-%d_%Hh%M")] packaged binary extraction failed"
   exit 1;
 fi
 
-echo "[$(date +"%Y-%m-%d_%Hh%M")] removing binary"
+echo "[$(date +"%Y-%m-%d_%Hh%M")] removing packaged binary"
 rm -f ${TAR_NAME}
 
 echo "[$(date +"%Y-%m-%d_%Hh%M")] building docker image"

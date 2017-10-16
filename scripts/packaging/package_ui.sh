@@ -5,9 +5,7 @@ WORKING_DIR="ui/target/packaging"
 DOCKER_DIR="$WORKING_DIR/docker"
 TAR_NAME="buymythings_ui.tar"
 
-BINARY_SERVER_USER="menelgil"
-BINARY_SERVER_HOST="remyradix.fr"
-BINARY_SERVER_DIR="BuyMyThings/packaging"
+BINARY_REPO="/var/jenkins_home/binary_repository/BuyMyThings"
 
 echo "[$(date +"%Y-%m-%d_%Hh%M")] cleaning packaging directories"
 rm -f ${ROOT_WORKING_DIR}/${TAR_NAME}
@@ -21,7 +19,7 @@ mkdir -p ${DOCKER_DIR}
 mkdir -p ${DOCKER_DIR}/libs
 
 echo "[$(date +"%Y-%m-%d_%Hh%M")] packaging BuyMyThings/UI"
-sbt UI/stage
+sbt -Dsbt.log.noformat=true UI/stage
 
 if [ "$?" -ne 0 ]; then
   echo "[$(date +"%Y-%m-%d_%Hh%M")] packaging failed"
@@ -43,11 +41,12 @@ if [ "$?" -ne 0 ]; then
 fi
 mv "$WORKING_DIR/$TAR_NAME" "$ROOT_WORKING_DIR/${TAR_NAME}"
 
-echo "[$(date +"%Y-%m-%d_%Hh%M")] sending packaged tar to binary server"
-scp "$ROOT_WORKING_DIR/$TAR_NAME" ${BINARY_SERVER_USER}@${BINARY_SERVER_HOST}:./${BINARY_SERVER_DIR}/${TAR_NAME}
+echo "[$(date +"%Y-%m-%d_%Hh%M")] moving packaged tar to binary repository"
+mkdir -p ${BINARY_REPO}
+mv ${ROOT_WORKING_DIR}/${TAR_NAME} ${BINARY_REPO}/
 
 if [ "$?" -ne 0 ]; then
-  echo "[$(date +"%Y-%m-%d_%Hh%M")] tar upload failed"
+  echo "[$(date +"%Y-%m-%d_%Hh%M")] tar move failed"
   exit 1;
 fi
 
