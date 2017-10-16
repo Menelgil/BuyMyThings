@@ -25,6 +25,9 @@ fi
 echo "[$(date +"%Y-%m-%d_%Hh%M")] removing packaged binary"
 rm -f ${TAR_NAME}
 
+echo "[$(date +"%Y-%m-%d_%Hh%M")] stopping service"
+sudo ./init.d/UI stop
+
 echo "[$(date +"%Y-%m-%d_%Hh%M")] building docker image"
 (cd docker; sudo docker build -t ${DOCKER_IMAGE} .)
 
@@ -33,8 +36,6 @@ if [ "$?" -ne 0 ]; then
   exit 1;
 fi
 
-echo "[$(date +"%Y-%m-%d_%Hh%M")] stopping service"
-sudo ./init.d/UI stop
 echo "[$(date +"%Y-%m-%d_%Hh%M")] starting service"
 sudo ./init.d/UI start
 
