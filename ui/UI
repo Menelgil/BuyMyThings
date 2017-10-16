@@ -8,8 +8,6 @@
 # Short-Description: Stop/start UI
 ### END INIT INFO
 
-FY_ENV='prod'
-
 APP_NAME='BuyMyThings-UI'
 LOG_PATH=/var/log/play/ui-service.log
 DOCKER_IMAGE="com.radix/buymythings_ui"
@@ -20,9 +18,7 @@ RETVAL=0
 start() {
   echo "Starting $APP_NAME service ..."
 
-  mkdir -p -m 777 /var/log/play
-
-  docker run --name ${IMAGE_NAME} -p 9000:9000 -v /var/log/play:/var/log/play --restart=on-failure ${DOCKER_IMAGE} &> /var/log/play/ui-docker-service.log &
+  docker run --name ${IMAGE_NAME} -p 9000:9000 -v /var/log/play:/var/log/play --restart=on-failure ${DOCKER_IMAGE} &> /var/log/docker/ui-docker-service.log &
   RETVAL=$?
 
   if [ ${RETVAL} -eq 0 ]; then

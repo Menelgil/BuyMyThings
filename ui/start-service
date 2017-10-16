@@ -4,4 +4,4 @@ export JAVA_HOME
 PIDFILE=/RUNNING_PID
 
 
-java -cp '/libs/*' -Dlogger.file= -verbose:gc -Dhttp.port=9000 -Xms128M -Xmx128M play.core.server.NettyServer
+java -cp '/libs/*' -Dlogger.file=logback.xml -verbose:gc -Dhttp.port=9000 -Xms128M -Xmx128M play.core.server.ProdServerStart
