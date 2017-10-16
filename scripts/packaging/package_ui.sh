@@ -33,7 +33,7 @@ cp ui/conf/logback.xml ${DOCKER_DIR}/
 cp ui/Dockerfile ${DOCKER_DIR}/
 
 echo "[$(date +"%Y-%m-%d_%Hh%M")] creating packaged tar"
-(cd ${WORKING_DIR}; tar cvf ${TAR_NAME} init.d docker)
+(cd ${WORKING_DIR}; tar cf ${TAR_NAME} init.d docker)
 
 if [ "$?" -ne 0 ]; then
   echo "[$(date +"%Y-%m-%d_%Hh%M")] tar creation failed"

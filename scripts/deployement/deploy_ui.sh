@@ -14,7 +14,7 @@ if [ "$?" -ne 0 ]; then
 fi
 
 echo "[$(date +"%Y-%m-%d_%Hh%M")] extracting packaged binary"
-tar xvf ${TAR_NAME}
+tar xf ${TAR_NAME}
 
 if [ "$?" -ne 0 ]; then
   echo "[$(date +"%Y-%m-%d_%Hh%M")] packaged binary extraction failed"
