@@ -15,6 +15,7 @@ fi
 
 echo "[$(date +"%Y-%m-%d_%Hh%M")] extracting packaged binary"
 tar xf ${TAR_NAME}
+sudo chmod +x ./init.d/UI
 
 if [ "$?" -ne 0 ]; then
   echo "[$(date +"%Y-%m-%d_%Hh%M")] packaged binary extraction failed"
@@ -32,11 +33,11 @@ if [ "$?" -ne 0 ]; then
   exit 1;
 fi
 
-echo "[$(date +"%Y-%m-%d_%Hh%M")] stopping service"
-sudo /etc/init.d/UI stop
+echo "[$(date +"%Y-%m-%d_%Hh%M")] restarting service"
+sudo ./init.d/UI restart
 
 if [ "$?" -ne 0 ]; then
-  echo "[$(date +"%Y-%m-%d_%Hh%M")] stopping service failed"
+  echo "[$(date +"%Y-%m-%d_%Hh%M")] restarting service failed"
   exit 1;
 fi
 
@@ -44,18 +45,5 @@ echo "[$(date +"%Y-%m-%d_%Hh%M")] removing stopped containers"
 sudo docker rm $(sudo docker ps -a -f status=exited -q) &> /dev/null
 echo "[$(date +"%Y-%m-%d_%Hh%M")] removing unused images"
 sudo docker rmi $(sudo docker images -a -f dangling=true -q) &> /dev/null
-
-echo "[$(date +"%Y-%m-%d_%Hh%M")] updating service init.d file"
-sudo cp init.d/UI /etc/init.d/UI
-sudo chmod +x /etc/init.d/UI
-
-
-echo "[$(date +"%Y-%m-%d_%Hh%M")] starting service"
-sudo /etc/init.d/UI start
-
-if [ "$?" -ne 0 ]; then
-  echo "[$(date +"%Y-%m-%d_%Hh%M")] starting service failed"
-  exit 1;
-fi
 
 echo "[$(date +"%Y-%m-%d_%Hh%M")] deployement done"

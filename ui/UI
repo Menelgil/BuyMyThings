@@ -1,6 +1,6 @@
 #!/bin/bash
 ### BEGIN INIT INFO
-# Provides:          BuyMyThins/UI
+# Provides:          BuyMyThings-UI
 # Required-Start:    $network $remote_fs $time
 # Required-Stop:     $network $remote_fs $time
 # Default-Start:     2 3 4 5
@@ -10,7 +10,7 @@
 
 FY_ENV='prod'
 
-APP_NAME='BuyMyThings/UI'
+APP_NAME='BuyMyThings-UI'
 LOG_PATH=/var/log/play/ui-service.log
 DOCKER_IMAGE="com.radix/buymythings_ui"
 IMAGE_NAME="buymythings_ui"
@@ -34,7 +34,7 @@ start() {
 }
 stop() {
   echo "Shutting down $APP_NAME service ..."
-  DOCKER_ID=$(docker ps | grep "${IMAGE_NAME}" | awk '{print $1}')
+  DOCKER_ID=$(docker ps -f ancestor="${IMAGE_NAME}" -q)
 
   docker stop ${DOCKER_ID}
   docker rm -f ${DOCKER_ID}
@@ -49,7 +49,7 @@ stop() {
 }
 
 status() {
-  IS_RUNNING=$(docker ps | grep "${IMAGE_NAME}" | wc -l)
+  IS_RUNNING=$(docker ps -f ancestor="${IMAGE_NAME}" -f status=running -q | wc -l)
 
   if [ ${IS_RUNNING} -eq 1 ]; then
       echo "$APP_NAME service running"
