@@ -27,7 +27,7 @@ echo "[$(date +"%Y-%m-%d_%Hh%M")] removing binary"
 rm -f ${TAR_NAME}
 
 echo "[$(date +"%Y-%m-%d_%Hh%M")] building docker image"
-(cd docker; docker build -t ${DOCKER_IMAGE} .)
+(cd docker; sudo docker build -t ${DOCKER_IMAGE} .)
 
 if [ "$?" -ne 0 ]; then
   echo "[$(date +"%Y-%m-%d_%Hh%M")] building docker image failed"
@@ -41,6 +41,11 @@ if [ "$?" -ne 0 ]; then
   echo "[$(date +"%Y-%m-%d_%Hh%M")] stopping service failed"
   exit 1;
 fi
+
+echo "[$(date +"%Y-%m-%d_%Hh%M")] removing stopped containers"
+sudo docker rm $(sudo docker ps -a -f status=exited -q) &> /dev/null
+echo "[$(date +"%Y-%m-%d_%Hh%M")] removing unused images"
+sudo docker rmi $(sudo docker images -a -f dangling=true -q) &> /dev/null
 
 echo "[$(date +"%Y-%m-%d_%Hh%M")] updating service init.d file"
 sudo cp init.d/UI /etc/init.d/UI
