@@ -1,0 +1,78 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          BuyMyThins/UI
+# Required-Start:    $network $remote_fs $time
+# Required-Stop:     $network $remote_fs $time
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Stop/start UI
+### END INIT INFO
+
+FY_ENV='prod'
+
+APP_NAME='BuyMyThings/UI'
+LOG_PATH=/var/log/play/ui-service.log
+DOCKER_IMAGE="com.radix/buymythings_ui"
+IMAGE_NAME="buymythings_ui"
+RETVAL=0
+
+
+start() {
+  echo "Starting $APP_NAME service ..."
+
+  mkdir -p -m 777 /var/log/play
+
+  docker run --name ${IMAGE_NAME} -p 9000:9000 -v /var/log/play:/var/log/play --restart=on-failure ${DOCKER_IMAGE} &> /var/log/play/ui-docker-service.log &
+  RETVAL=$?
+
+  if [ ${RETVAL} -eq 0 ]; then
+    echo "$APP_NAME service started"
+  else
+    echo "Unable to start the $APP_NAME service"
+    exit 1
+  fi
+}
+stop() {
+  echo "Shutting down $APP_NAME service ..."
+  DOCKER_ID=$(docker ps | grep "${IMAGE_NAME}" | awk '{print $1}')
+
+  docker stop ${DOCKER_ID}
+  docker rm -f ${DOCKER_ID}
+
+  RETVAL=$?
+  if [ ${RETVAL} -eq 0 ]; then
+    echo "$APP_NAME service stoped"
+  else
+    echo "Unable to stop the $APP_NAME service"
+    exit 1
+  fi
+}
+
+status() {
+  IS_RUNNING=$(docker ps | grep "${IMAGE_NAME}" | wc -l)
+
+  if [ ${IS_RUNNING} -eq 1 ]; then
+      echo "$APP_NAME service running"
+  else
+      printf "%s\n" "$APP_NAME service not running"
+  fi
+}
+case "$1" in
+  start)
+  start
+  ;;
+  stop)
+  stop
+  ;;
+  restart|reload)
+  stop
+  sleep 10
+  start
+  ;;
+  status)
+  status
+  ;;
+  *)
+  echo "Usage: $0 {start|stop|restart|status}"
+esac
+exit 0
