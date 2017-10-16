@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::")
+export JAVA_HOME
+PIDFILE=/RUNNING_PID
+
+
+java -cp '/libs/*' -Dlogger.file= -verbose:gc -Dhttp.port=9000 -Xms128M -Xmx128M play.core.server.NettyServer

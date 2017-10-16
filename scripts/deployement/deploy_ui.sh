@@ -33,11 +33,13 @@ if [ "$?" -ne 0 ]; then
   exit 1;
 fi
 
-echo "[$(date +"%Y-%m-%d_%Hh%M")] restarting service"
-sudo ./init.d/UI restart
+echo "[$(date +"%Y-%m-%d_%Hh%M")] stopping service"
+sudo ./init.d/UI stop
+echo "[$(date +"%Y-%m-%d_%Hh%M")] starting service"
+sudo ./init.d/UI start
 
 if [ "$?" -ne 0 ]; then
-  echo "[$(date +"%Y-%m-%d_%Hh%M")] restarting service failed"
+  echo "[$(date +"%Y-%m-%d_%Hh%M")] starting service failed"
   exit 1;
 fi
 
