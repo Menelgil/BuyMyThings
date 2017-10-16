@@ -1,5 +1,6 @@
 FROM openjdk:8
 
+ADD conf conf
 ADD start-service start-service
 
 VOLUME /var/log/play

@@ -4,4 +4,4 @@ export JAVA_HOME
 PIDFILE=/RUNNING_PID
 
 
-java -cp '/libs/*' -Dlogger.file=logback.xml -verbose:gc -Dhttp.port=9000 -Xms128M -Xmx128M play.core.server.ProdServerStart
+java -cp "libs/*" -Dlogger.file=conf/logback.xml -Dconfig.file=conf/application.conf -verbose:gc -Dhttp.port=9000 -Xms128M -Xmx128M play.core.server.ProdServerStart

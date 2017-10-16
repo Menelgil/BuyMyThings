@@ -31,7 +31,8 @@ cp ui/UI ${WORKING_DIR}/init.d/
 cp ui/target/universal/stage/lib/* ${DOCKER_DIR}/libs/
 cp ui/conf/logback.xml ${DOCKER_DIR}/
 cp ui/Dockerfile ${DOCKER_DIR}/
-cp ui/start-service ${DOCKER_DIR}
+cp ui/start-service ${DOCKER_DIR}/
+cp -r ui/target/universal/stage/conf ${DOCKER_DIR}/
 
 echo "[$(date +"%Y-%m-%d_%Hh%M")] creating packaged tar"
 (cd ${WORKING_DIR}; tar cf ${TAR_NAME} init.d docker)
