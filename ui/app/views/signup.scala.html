@@ -1,0 +1,18 @@
+@(error: Option[String] = None)
+
+@common("BuyMyThings - Create an account") {
+  <h1>Create an account</h1>
+  <form method="POST" action="">
+    <input id="email-input" type="email" placeholder="email" required />
+    <br>
+    <input id="password-input" type="password" placeholder="password" required />
+    <br>
+    <input id="password-confirmation-input" type="password" placeholder="confirm password" required />
+    <br>
+    @error.map { errorMsg =>
+      <span>@errorMsg</span>
+    }
+    <p>Or <a href="">sign-in</a> if you already have an account</p>
+    <button type="submit">Create</button>
+  </form>
+}
